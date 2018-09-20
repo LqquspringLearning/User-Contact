@@ -20,15 +20,14 @@ public class UserContactCreateTest extends UserControllerTest {
     @Test
     void should_create_a_user_contact() throws Exception {
         Contact contact = new Contact(1, "huanglizhen", "13212332121", 18, Gender.female);
-        Map<Integer,Contact> mapContact = new HashMap<>();
-        mapContact.put(contact.getId(),contact);
-        UserStorage.add(new User(1, "caoyue", mapContact));
-        Contact updateContact = new Contact(1, "zuopeixi", "13212332121", 18, Gender.female);
+        UserStorage.add(new User(1, "caoyue"));
         mockMvc.perform(post("/api/user/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertToJson(updateContact)))
-                .andExpect(status().isCreated());
-
+                .content(convertToJson(contact)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.contacts.1.id").value(1))
+                .andExpect(jsonPath("$.contacts.1.name").value("huanglizhen"))
+                .andExpect(jsonPath("$.contacts.1.gender").value("female"));
     }
 
     @Test
