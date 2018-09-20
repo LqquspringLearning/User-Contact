@@ -26,9 +26,9 @@ public class UserContactCreateTest extends UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertToJson(contact)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.contacts.1.id").value(1))
-                .andExpect(jsonPath("$.contacts.1.name").value("huanglizhen"))
-                .andExpect(jsonPath("$.contacts.1.gender").value("female"));
+                .andExpect(jsonPath("$.contacts[0].id").value(1))
+                .andExpect(jsonPath("$.contacts[0].name").value("huanglizhen"))
+                .andExpect(jsonPath("$.contacts[0].gender").value("female"));
     }
 
     @Test

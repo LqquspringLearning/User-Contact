@@ -1,9 +1,9 @@
 package com.thoughtworks.grad.step.Beans;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import java.util.*;
 
 public class User {
 
@@ -53,8 +53,13 @@ public class User {
         this.contacts.put(contact.getId(), contact);
     }
 
-    public Map<Integer, Contact> getContacts() {
+
+    public Map<Integer, Contact> getContactsMap() {
         return contacts;
+    }
+
+    public Collection<Contact> getContacts() {
+        return contacts.values();
     }
 
 }

@@ -37,7 +37,7 @@ public class UserController {
         if (dbUser == null) {
             return BadRequest("user not exists");
         }
-        if (!dbUser.getContacts().containsKey(contact.getId())) {
+        if (!dbUser.getContactsMap().containsKey(contact.getId())) {
             dbUser.setContacts(contact);
             return new ResponseEntity<>(repository.updateOrCreateContact(dbUser), HttpStatus.CREATED);
         }

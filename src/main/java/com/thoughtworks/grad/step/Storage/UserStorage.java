@@ -38,7 +38,7 @@ public class UserStorage {
 
     public static User updateOrCreateContact(User user) {
         User dbUser = userList.get(user.getId());
-        dbUser.setContacts(user.getContacts());
+        dbUser.setContacts(user.getContactsMap());
         userList.put(dbUser.getId(), dbUser);
         return userList.get(user.getId());
     }

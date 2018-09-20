@@ -24,7 +24,7 @@ public class UserContactUpdateTest extends UserControllerTest {
         HashMap<Integer, Contact> mapContact = new HashMap<>();
         mapContact.put(contact.getId(), contact);
         UserStorage.add(new User(1, "caoyue", mapContact));
-        assertThat(UserStorage.get(1).getContacts().get(1)).isEqualTo(contact);
+        assertThat(UserStorage.get(1).getContactsMap().get(1)).isEqualTo(contact);
 
         Contact updateContact = new Contact(1, "zuopeixi", "13212332121", 18, Gender.male);
         mockMvc.perform(put("/api/user/1")
@@ -32,7 +32,7 @@ public class UserContactUpdateTest extends UserControllerTest {
                 .content(convertToJson(updateContact)))
                 .andExpect(status().isNoContent());
 
-        assertThat(UserStorage.get(1).getContacts().get(1)).isEqualTo(updateContact);
+        assertThat(UserStorage.get(1).getContactsMap().get(1)).isEqualTo(updateContact);
     }
 
     @Test
@@ -45,9 +45,10 @@ public class UserContactUpdateTest extends UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertToJson(contact)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.contacts.1.id").value(1))
-                .andExpect(jsonPath("$.contacts.1.name").value("zuopeixi"))
-                .andExpect(jsonPath("$.contacts.1.gender").value("male"));;
+                .andExpect(jsonPath("$.contacts[0].id").value(1))
+                .andExpect(jsonPath("$.contacts[0].name").value("zuopeixi"))
+                .andExpect(jsonPath("$.contacts[0].gender").value("male"));
+        ;
 
     }
 
