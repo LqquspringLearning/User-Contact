@@ -7,27 +7,24 @@ import com.thoughtworks.grad.step.Storage.UserStorage;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserContactCreateTest extends UserControllerTest {
+public class UserContactUpdateTest extends UserControllerTest {
     @Test
-    void should_create_a_user_contact() throws Exception {
+    void should_update_a_user_contact() throws Exception {
+        UserStorage.add(new User(1, "caoyue"));
         Contact contact = new Contact(1, "huanglizhen", "13212332121", 18, Gender.female);
-        Map<Integer,Contact> mapContact = new HashMap<>();
-        mapContact.put(contact.getId(),contact);
-        UserStorage.add(new User(1, "caoyue", mapContact));
-        Contact updateContact = new Contact(1, "zuopeixi", "13212332121", 18, Gender.female);
         mockMvc.perform(post("/api/user/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertToJson(updateContact)))
-                .andExpect(status().isCreated());
+                .content(convertToJson(contact)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.contacts", hasSize(1)))
+                .andExpect(jsonPath("$.contacts[0].id").value(1))
+                .andExpect(jsonPath("$.contacts[0].name").value("huanglizhen"))
+                .andExpect(jsonPath("$.contacts[0].gender").value("female"));
 
     }
 
@@ -49,6 +46,4 @@ public class UserContactCreateTest extends UserControllerTest {
                 .content(""))
                 .andExpect(status().isBadRequest());
     }
-
-
 }
