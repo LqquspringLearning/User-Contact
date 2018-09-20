@@ -22,51 +22,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class UserControllerTest {
-    private MockMvc mockMvc;
+    protected MockMvc mockMvc;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(new UserController()).build();
         UserStorage.clear();
     }
 
-    @Test
-    void should_update_a_user_contact() throws Exception {
-        UserStorage.add(new User(1, "caoyue"));
-        Contact contact = new Contact(1, "huanglizhen", "13212332121", 18, Gender.female);
-        mockMvc.perform(post("/api/user/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertToJson(contact)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.contacts", hasSize(1)))
-                .andExpect(jsonPath("$.contacts[0].id").value(1))
-                .andExpect(jsonPath("$.contacts[0].name").value("huanglizhen"))
-                .andExpect(jsonPath("$.contacts[0].gender").value("female"));
 
-    }
-
-    @Test
-    void should_get_bad_request_when_use_id_less_0() throws Exception {
-        UserStorage.add(new User(0, "caoyue"));
-        Contact contact = new Contact(1, "huanglizhen", "13212332121", 18, Gender.female);
-        mockMvc.perform(post("/api/user/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertToJson(contact)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
-    void should_get_bad_request_when_contact_is_empty() throws Exception {
-        UserStorage.add(new User(1, "caoyue"));
-        mockMvc.perform(post("/api/user/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(""))
-                .andExpect(status().isBadRequest());
-    }
-
-
-
-    private static String convertToJson(Object obj) throws JsonProcessingException {
+    protected static String convertToJson(Object obj) throws JsonProcessingException {
         return new ObjectMapper().writeValueAsString(obj);
     }
 }
