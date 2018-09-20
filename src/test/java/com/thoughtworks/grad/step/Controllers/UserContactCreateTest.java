@@ -12,7 +12,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserContactUpdateTest extends UserControllerTest {
+public class UserContactCreateTest extends UserControllerTest {
     @Test
     void should_update_a_user_contact() throws Exception {
         UserStorage.add(new User(1, "caoyue"));

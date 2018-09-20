@@ -36,7 +36,7 @@ public class UserStorage {
         return userList.get(id);
     }
 
-    public static User updateContact(User user) {
+    public static User updateOrCreateContact(User user) {
         User dbUser = userList.get(user.getId());
         dbUser.setContacts(user.getContacts());
         userList.put(dbUser.getId(), dbUser);

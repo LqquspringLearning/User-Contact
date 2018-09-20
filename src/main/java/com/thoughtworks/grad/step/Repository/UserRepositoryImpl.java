@@ -11,7 +11,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User updateContact(User user) {
-        return UserStorage.updateContact(user);
+    public User updateOrCreateContact(User user) {
+        return UserStorage.updateOrCreateContact(user);
     }
 }
