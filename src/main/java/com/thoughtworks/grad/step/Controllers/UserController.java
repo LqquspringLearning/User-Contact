@@ -28,6 +28,24 @@ public class UserController {
         return new ResponseEntity<>(realUser, HttpStatus.CREATED);
     }
 
+    @PutMapping("/user/{id}")
+    public ResponseEntity updateUserContact(@PathVariable int id, @RequestBody Contact contact) {
+        if (id <= 0 || contact == null) {
+            return BadRequest("");
+        }
+        User dbUser = repository.getById(id);
+        if (dbUser == null) {
+            return BadRequest("user not exists");
+        }
+        if (!dbUser.getContacts().containsKey(contact.getId())) {
+            dbUser.setContacts(contact);
+            return new ResponseEntity<>(repository.updateOrCreateContact(dbUser), HttpStatus.CREATED);
+        }
+        dbUser.setContacts(contact);
+        repository.updateOrCreateContact(dbUser);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
     private ResponseEntity BadRequest(String msg) {
         if (msg == null || msg.trim().isEmpty()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

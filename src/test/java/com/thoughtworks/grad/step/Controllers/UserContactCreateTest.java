@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -37,7 +38,8 @@ public class UserContactCreateTest extends UserControllerTest {
         mockMvc.perform(post("/api/user/1")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertToJson(contact)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("user not exists"));
     }
 
     @Test
