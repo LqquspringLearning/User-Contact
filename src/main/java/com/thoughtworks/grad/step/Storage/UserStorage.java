@@ -71,4 +71,12 @@ public class UserStorage {
         userList.put(id, dbUser);
         return userList.get(user.getId());
     }
+
+    public static void deleteContact(int contactId, User user) {
+        User dbUser = userList.get(user.getId());
+        Map<Integer, Contact> contactMap = dbUser.getContactsMap();
+        contactMap.remove(contactId);
+        dbUser.setContacts(contactMap);
+        userList.put(dbUser.getId(), dbUser);
+    }
 }

@@ -9,33 +9,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
 
     UserRepository repository = new UserRepositoryImpl();
 
-    @PostMapping("/user/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity createContact(@PathVariable int id, @RequestBody Contact contact) {
         if (id <= 0 || contact == null) {
-            return BadRequest("");
+            return badRequest("");
         }
         User dbUser = repository.getById(id);
         if (dbUser == null) {
-            return BadRequest("user not exists");
+            return notFound();
         }
         dbUser.setContacts(contact);
         User realUser = repository.createContact(dbUser);
         return new ResponseEntity<>(realUser, HttpStatus.CREATED);
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity updateUserContact(@PathVariable int id, @RequestBody Contact contact) {
         if (id <= 0 || contact == null) {
-            return BadRequest("");
+            return badRequest("");
         }
         User dbUser = repository.getById(id);
         if (dbUser == null) {
-            return BadRequest("user not exists");
+            return notFound();
         }
         if (!dbUser.getContactsMap().containsKey(id)) {
             dbUser.setContacts(contact);
@@ -46,19 +46,36 @@ public class UserController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/user/{id}/contacts")
+    @GetMapping("/{id}/contacts")
     public ResponseEntity getAllContacts(@PathVariable int id) {
         if (id <= 0) {
-            return BadRequest("");
+            return badRequest("");
         }
         User dbUser = repository.getById(id);
         if (dbUser == null) {
-            return BadRequest("user not exists");
+            return notFound();
         }
         return new ResponseEntity<>(dbUser.getContacts(), HttpStatus.OK);
     }
 
-    private ResponseEntity BadRequest(String msg) {
+    @DeleteMapping("/{userId}/contact/{contactId}")
+    public ResponseEntity deleteContact(@PathVariable int userId, @PathVariable int contactId) {
+        if (userId <= 0 || contactId <= 0) {
+            return badRequest("");
+        }
+        User dbUser = repository.getById(userId);
+        if (dbUser == null) {
+            return notFound();
+        }
+        repository.deleteContact(contactId, dbUser);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    private ResponseEntity notFound() {
+        return new ResponseEntity(HttpStatus.NOT_FOUND);
+    }
+
+    private ResponseEntity badRequest(String msg) {
         if (msg == null || msg.trim().isEmpty()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }

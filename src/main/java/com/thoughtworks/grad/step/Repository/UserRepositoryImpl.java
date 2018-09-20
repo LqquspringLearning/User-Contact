@@ -7,7 +7,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getById(int id) {
-      return  UserStorage.get(id);
+        return UserStorage.get(id);
     }
 
     @Override
@@ -17,6 +17,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User updateContact(int id, User dbUser) {
-        return UserStorage.update(id,dbUser);
+        return UserStorage.update(id, dbUser);
+    }
+
+    @Override
+    public void deleteContact(int contactId, User user) {
+        UserStorage.deleteContact(contactId, user);
     }
 }

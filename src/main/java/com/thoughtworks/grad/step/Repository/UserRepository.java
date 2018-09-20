@@ -8,4 +8,6 @@ public interface UserRepository {
     User createContact(User user);
 
     User updateContact(int id, User dbUser);
+
+    void deleteContact(int contactId, User user);
 }
