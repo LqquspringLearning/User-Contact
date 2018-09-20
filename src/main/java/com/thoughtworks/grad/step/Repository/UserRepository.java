@@ -10,4 +10,6 @@ public interface UserRepository {
     User updateContact(int id, User dbUser);
 
     void deleteContact(int contactId, User user);
+
+    User getByName(String name);
 }

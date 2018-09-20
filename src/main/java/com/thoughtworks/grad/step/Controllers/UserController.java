@@ -71,6 +71,30 @@ public class UserController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/")
+    public ResponseEntity getUserContact(@RequestParam String userName, String contactName) {
+        if (userName == null ||
+                contactName == null ||
+                userName.trim().isEmpty() ||
+                contactName.trim().isEmpty()) {
+            return badRequest("");
+        }
+        User dbUser = repository.getByName(userName);
+        if (dbUser == null) {
+            return notFound();
+        }
+        Contact[] contacts = new Contact[1];
+        dbUser.getContacts().forEach(c -> {
+            if (c.getName() == contactName) {
+                contacts[0] = c;
+            }
+        });
+        if (contacts[0] == null) {
+            return notFound();
+        }
+        return new ResponseEntity<>(contacts[0], HttpStatus.OK);
+    }
+
     private ResponseEntity notFound() {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }

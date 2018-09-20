@@ -34,5 +34,6 @@ public class UserContactDeleteTest extends UserControllerTest {
         mockMvc.perform(delete("/api/user/10/contact/1"))
                 .andExpect(status().isNotFound());
     }
+
 }
 

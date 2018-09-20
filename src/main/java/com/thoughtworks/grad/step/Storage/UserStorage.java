@@ -15,11 +15,14 @@ public class UserStorage {
 
     public static Map<Integer, User> initUserData() {
         Map<Integer, User> result = new LinkedHashMap<>();
+        Map<Integer, Contact> contactMap = new HashMap<>();
+        Contact contact = new Contact(1, "huanglizhen", "13212332121", 18, Gender.female);
+        contactMap.put(contact.getId(), contact);
         result.put(1, new User(1, "caoyue"));
         result.put(2, new User(2, "zuopeixi"));
         result.put(3, new User(3, "liuyanping"));
         result.put(4, new User(4, "xuya"));
-        result.put(5, new User(5, "sunming"));
+        result.put(5, new User(5, "sunming",contactMap));
         return result;
     }
 
@@ -78,5 +81,15 @@ public class UserStorage {
         contactMap.remove(contactId);
         dbUser.setContacts(contactMap);
         userList.put(dbUser.getId(), dbUser);
+    }
+
+    public static User getByName(String userName) {
+        User[] users = new User[1];
+        userList.forEach((key, value) -> {
+            if (value.getName().equals(userName)) {
+                users[0] = value;
+            }
+        });
+        return users[0];
     }
 }
