@@ -24,7 +24,7 @@ public class UserController {
             return BadRequest("user not exists");
         }
         dbUser.setContacts(contact);
-        User realUser = repository.updateOrCreateContact(dbUser);
+        User realUser = repository.createContact(dbUser);
         return new ResponseEntity<>(realUser, HttpStatus.CREATED);
     }
 
@@ -37,13 +37,25 @@ public class UserController {
         if (dbUser == null) {
             return BadRequest("user not exists");
         }
-        if (!dbUser.getContactsMap().containsKey(contact.getId())) {
+        if (!dbUser.getContactsMap().containsKey(id)) {
             dbUser.setContacts(contact);
-            return new ResponseEntity<>(repository.updateOrCreateContact(dbUser), HttpStatus.CREATED);
+            return new ResponseEntity<>(repository.updateContact(id, dbUser), HttpStatus.CREATED);
         }
         dbUser.setContacts(contact);
-        repository.updateOrCreateContact(dbUser);
+        repository.createContact(dbUser);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/user/{id}/contacts")
+    public ResponseEntity getAllContacts(@PathVariable int id) {
+        if (id <= 0) {
+            return BadRequest("");
+        }
+        User dbUser = repository.getById(id);
+        if (dbUser == null) {
+            return BadRequest("user not exists");
+        }
+        return new ResponseEntity<>(dbUser.getContacts(), HttpStatus.OK);
     }
 
     private ResponseEntity BadRequest(String msg) {

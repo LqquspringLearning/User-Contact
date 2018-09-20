@@ -5,5 +5,7 @@ import com.thoughtworks.grad.step.Beans.User;
 public interface UserRepository {
     User getById(int id);
 
-    User updateOrCreateContact(User user);
+    User createContact(User user);
+
+    User updateContact(int id, User dbUser);
 }
