@@ -35,11 +35,10 @@ public class UserContactCreateTest extends UserControllerTest {
     void should_get_bad_request_when_use_id_less_0() throws Exception {
         UserStorage.add(new User(0, "caoyue"));
         Contact contact = new Contact(1, "huanglizhen", "13212332121", 18, Gender.female);
-        mockMvc.perform(post("/api/user/1")
+        mockMvc.perform(post("/api/user/0")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(convertToJson(contact)))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("user not exists"));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
